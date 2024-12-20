@@ -668,14 +668,23 @@ function startBreakNotification () {
   updateTray()
 }
 
-function getBreakWindowVibrancyOptions () {
-  if (settings.get('transparentMode') || settings.get('fullscreen') || process.platform !== 'darwin') {
+function getBlurredBackgroundWindowOptions () {
+  if (!settings.get('blurredBackground')) {
     return {}
   }
 
-  return {
-    vibrancy: 'hud',
-    visualEffectState: 'active'
+  switch (process.platform) {
+    case 'darwin':
+      return {
+        vibrancy: 'hud',
+        visualEffectState: 'active'
+      }
+    case 'win32':
+      return {
+        backgroundMaterial: 'acrylic'
+      }
+    default:
+      return {}
   }
 }
 
@@ -715,7 +724,7 @@ function startMicrobreak () {
       show: false,
       backgroundThrottling: false,
       transparent: true,
-      ...getBreakWindowVibrancyOptions(),
+      ...getBlurredBackgroundWindowOptions(),
       backgroundColor: calculateBackgroundColor(settings.get('miniBreakColor')),
       skipTaskbar: !showBreaksAsRegularWindows,
       focusable: showBreaksAsRegularWindows,
@@ -864,7 +873,7 @@ function startBreak () {
       show: false,
       backgroundThrottling: false,
       transparent: true,
-      ...getBreakWindowVibrancyOptions(),
+      ...getBlurredBackgroundWindowOptions(),
       backgroundColor: calculateBackgroundColor(settings.get('mainColor')),
       skipTaskbar: !showBreaksAsRegularWindows,
       focusable: showBreaksAsRegularWindows,

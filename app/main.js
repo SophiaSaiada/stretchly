@@ -679,10 +679,6 @@ function getBlurredBackgroundWindowOptions () {
         vibrancy: 'hud',
         visualEffectState: 'active'
       }
-    case 'win32':
-      return {
-        backgroundMaterial: 'acrylic'
-      }
     default:
       return {}
   }
